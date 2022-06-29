@@ -6,6 +6,6 @@ export type InputProps ={
     value?: string; 
     register: {}; 
     errors: string | undefined; 
-    loading: any;
+    loading: boolean;
     onChange?: any;
 }

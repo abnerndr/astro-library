@@ -1,20 +1,27 @@
 import LoginComponent from '@/components/Pages/Authentication/LoginComponente';
-import { useCallback, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 import Router from 'next/router';
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
 import { app, auth } from '@/services/firebase';
+
+import { AuthContext } from '@/contexts/AuthContext';
 
 /* eslint-disable @next/next/no-img-element */
 export default function Login() {
   const [loading, setLoading] = useState(false);
 
+  const { signIn }: any = useContext(AuthContext);
+
   const onSubmit = useCallback(async (formData: any) => {
-    const authentication = auth;
-    signInWithEmailAndPassword(authentication, formData.email, formData.password).then((response) => {
-      Router.push('/private/home');
-      console.log('foi');
-      sessionStorage.setItem('Auth Token', response._tokenResponse.refreshToken);
-    });
+    const email = formData.email;
+    const password = formData.password;
+    await signIn({ email, password });
+    // const authentication = auth;
+    // signInWithEmailAndPassword(authentication, formData.email, formData.password).then((response) => {
+    //   Router.push('/private/home');
+    //   console.log('foi');
+    //   sessionStorage.setItem('Auth Token', response._tokenResponse.refreshToken);
+    // });
   }, []);
   return (
     <div className='min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8'>
